@@ -85,7 +85,7 @@ function AuthLogin() {
 
                     {/* Terms and Conditions */}
                     <p className="text-center text-gray-600 text-sm mt-4">
-                        Upon signing in, you consent to abide by our{" "}
+                        
                         <a href="/home" className="text-gray-900 underline">
                             Terms of Service
                         </a>{" "}
