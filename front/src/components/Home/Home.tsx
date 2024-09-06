@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate()
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col justify-center items-center p-8">
       {/* Section de présentation de l'événement */}
@@ -8,7 +10,7 @@ function Home() {
       <img src="https://ecole-ipssi.com/wp-content/uploads/2021/10/cropped-ipssi-favicon.png" alt="" width="100"/>
         {/* Titre de l'événement */}
         <h1 className="text-4xl lg:text-6xl font-bold text-blue-gray-800">
-          Nom des participants
+          TP MERN
         </h1>
         <div className="">
           <ul>
@@ -28,6 +30,7 @@ function Home() {
         {/* Bouton d'inscription */}
         <button
           className="bg-blue-500 text-white font-semibold px-8 py-4 rounded-lg mt-6 hover:bg-blue-600 transition"
+          onClick={() => {navigate("/login")}}
         >
           S'inscrire Maintenant
         </button>
