@@ -1,6 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { User } from "../../models";
 
 function AuthRegister() {
+
+  const [newUser, setnewUser] = useState<User>({
+    nickname: "",
+    email: "",
+    password: "",
+    statut: {
+      statut: "user",
+    },
+  });
+
+  async function registerUser(newUser: User) {
+    try {
+      const response = await fetch("http://localhost:3010/users/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Allow-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify(newUser),
+      });
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="md:px-24 md:py-14 py-8 px-4 bg-white border border-gray-300 shadow-md rounded-lg max-w-lg w-full">
