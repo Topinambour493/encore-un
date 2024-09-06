@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { User } from "../../models";
+import {useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
+import {Simulate} from "react-dom/test-utils";
+import error = Simulate.error;
 
 function AuthRegister() {
+  const navigate = useNavigate()
 
-  const [newUser, setnewUser] = useState<User>({
-    nickname: "",
-    email: "",
-    password: "",
-    statut: {
-      statut: "user",
-    },
-  });
+
+  const  { register, handleSubmit } = useForm<User>({ shouldUseNativeValidation: true });
+  const onSubmit = async (data: User) => {
+    const response = await fetch('http://localhost:3010/auth/register',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+    if (response.ok) {
+      let tokens = await response.json()
+      localStorage.setItem('tokens', JSON.stringify(tokens));
+      navigate('/')
+    } else {
+      console.log(data)
+      console.log(await response.json())
+      alert("Erreur d'inscription");
+    }
+  };
 
   async function registerUser(newUser: User) {
     try {
@@ -44,14 +61,14 @@ function AuthRegister() {
         <form className="flex flex-col gap-4 md:mt-8">
           {/* Nom Input */}
           <div>
-            <label htmlFor="name" className="block font-medium text-blue-gray-800 mb-2">
+            <label htmlFor="nickname" className="block font-medium text-blue-gray-800 mb-2">
               Votre Nom
             </label>
             <input
-              id="name"
+              id="nickname"
               type="text"
-              name="name"
               placeholder="Votre nom"
+              {...register("nickname", { required: "Entre un pseudo" })}
               className="w-full border border-gray-300 focus:border-blue-500 rounded-lg px-4 py-2"
             />
           </div>
@@ -64,7 +81,7 @@ function AuthRegister() {
             <input
               id="email"
               type="email"
-              name="email"
+              {...register("email", { required: "Entre un email" })}
               placeholder="name@mail.com"
               className="w-full border border-gray-300 focus:border-blue-500 rounded-lg px-4 py-2"
             />
@@ -78,14 +95,14 @@ function AuthRegister() {
             <input
               id="password"
               type="password"
-              name="password"
+              {...register("password", { required: "Entre un mot de passe" })}
               placeholder="********"
               className="w-full border border-gray-300 focus:border-blue-500 rounded-lg px-4 py-2"
             />
           </div>
 
           {/* Register Button */}
-          <button className="w-full bg-gray-800 text-white rounded-lg px-4 py-2 font-medium">
+          <button onClick={handleSubmit(onSubmit)} className="w-full bg-gray-800 text-white rounded-lg px-4 py-2 font-medium">
             Créer un compte
           </button>
 
