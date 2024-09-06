@@ -1,14 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './components/Home/Home';
+import Register from './components/AuthRegister/AuthRegister';
+import AuthLogin from './components/AuthLogin/AuthLogin';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<AuthLogin />} />
       </Routes>
     </BrowserRouter>
   );
