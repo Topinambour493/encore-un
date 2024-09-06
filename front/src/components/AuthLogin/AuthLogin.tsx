@@ -1,13 +1,15 @@
 import React, { useEffect } from "react";
+import {useNavigate} from "react-router-dom";
 
 function AuthLogin() {
+    const navigate = useNavigate()
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
 
     async function submitForm() {
         try {
-            const response = await fetch("http://localhost:30010/login", {
+            const response = await fetch("http://localhost:3010/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -18,8 +20,14 @@ function AuthLogin() {
                     password: password,
                 }),
             });
-            const data = await response.json();
-            console.log(data);
+            if (response.ok) {
+                let tokens = await response.json()
+                localStorage.setItem('tokens', JSON.stringify(tokens));
+                navigate('/')
+            } else {
+                console.log(await response.json())
+                alert("Erreur de connexion");
+            }
         } catch (error) {
             console.error(error);
         }
@@ -69,7 +77,7 @@ function AuthLogin() {
 
 
                     {/* Continue Button */}
-                    <button className="w-full bg-gray-800 text-white rounded-lg px-4 py-2 font-medium" onClick={() => { submitForm() }}>
+                    <button className="w-full bg-gray-800 text-white rounded-lg px-4 py-2 font-medium" onClick={(e) => { e.preventDefault();submitForm() }}>
                         Continue
                     </button>
 
